@@ -1,6 +1,6 @@
 import React from 'react';
 
-const RegisteredUserLinks = () => {
+const Logo = () => {
     return (
         <div>
 
@@ -8,4 +8,4 @@ const RegisteredUserLinks = () => {
     );
 }
 
-export default RegisteredUserLinks;
+export default Logo;
