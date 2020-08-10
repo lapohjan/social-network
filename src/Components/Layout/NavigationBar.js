@@ -6,7 +6,8 @@ const NavigationBar = () => {
     return (
             <nav>
     <div className="nav-wrapper">
-      <Logo/>
+      {/* <Logo/> */}
+      <a href="#" class="brand-logo">Logo</a>
       <ul className="right hide-on-med-and-down">
         <li>
             <Link to="/Home">Home</Link></li>
