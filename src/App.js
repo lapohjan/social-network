@@ -1,27 +1,44 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import NavigationBar from './Components/Layout/NavigationBar';
-// import Notifications from './Components/HomePage/Notifications';
-import Home from './Components/HomePage/Home';
-import LogIn from './Components/Auth/LogIn';
-import LogOut from './Components/Auth/LogOut';
-import Register from './Components/Auth/Register';
-// import Feeds from './Components/HomePage/Feeds';
-// import AllPosts from './Components/HomePage/AllPosts';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import NavigationBar from './Components/Layout/NavigationBar'
+import Feeds from './Components/HomePage/Feeds'
+import LogIn from './Components/Auth/LogIn'
+import LogOut from './Components/Auth/LogOut'
+import Register from './Components/Auth/Register'
+import PostDetails from './Components/Posts/PostDetails'
+import CreateNewPost from './Components/Posts/CreateNewPost'
+import Firebase from 'firebase'
+
+import { FIREBASE_CONFIG as firebaseConfig } from './config/firebaseConfig';
+  // Initialize Firebase
+  Firebase.initializeApp(firebaseConfig);
+  Firebase.analytics();
+
+const database = Firebase.firestore();
+database.collection('posts').get()
+  .then (resp => {
+    console.log(resp.docs[0].data());
+  })
+
 function App() {
   return (
     <Router>
-      <NavigationBar/>
-      <Switch>
-        <Route path="/" exact component={Home}/>        
-        <Route path="/notregistered" exact component={Register}/>
-        <Route path="/LogIn">
-          <LogIn/>
-          <LogOut/>
-        </Route>
-      </Switch>
+      <div className="App">
+        <div className="container">
+          <NavigationBar/>
+          <Switch>
+            <Route exact path="/" component={Feeds}></Route>
+            <Route exact path="/create" component={CreateNewPost}></Route>
+            <Route exact path="/register" component={Register}></Route>
+            <Route exact path="/login" component={LogIn}></Route>
+            <Route exact path="/logout" component={LogOut}></Route>
+            <Route exact path="/post/:id" component={PostDetails}></Route>
+          </Switch>       
+        </div>
+      </div>
     </Router>
-);
+  );
 }
+
 export default App;
