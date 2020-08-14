@@ -1,4 +1,7 @@
 import React from 'react'
+import Firebase from 'firebase';
+
+const Auth = Firebase.auth();
 
 class LogIn extends React.Component {
     constructor(props) {
@@ -13,6 +16,7 @@ class LogIn extends React.Component {
     }
 
     handleChange = (e) => {
+        console.log(this);
         this.setState({
             [e.target.id]: e.target.value
         })
