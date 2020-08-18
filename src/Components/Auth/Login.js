@@ -1,11 +1,10 @@
-import React from 'react'
+import React from 'react';
 import Firebase from 'firebase';
-
-const Auth = Firebase.auth();
 
 class LogIn extends React.Component {
     constructor(props) {
         super(props);  
+    
         this.state = {
             email: null,
             password: null
@@ -24,7 +23,15 @@ class LogIn extends React.Component {
 
     handleSubmission = (e) => {
         e.preventDefault();
-        console.log(this.state);
+
+        Firebase.auth().signInWithEmailAndPassword(
+            this.state.email,
+            this.state.password
+        ).then(() => {
+            console.log('Login success');
+        }).catch(err => {
+            console.log('Login fail: ' + err);
+        });
     }
 
     render(){
