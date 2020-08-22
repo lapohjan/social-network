@@ -3,21 +3,21 @@ import PostSummary from './PostSummary'
 import { connect } from 'react-redux'
 
 class AllPosts extends React.Component {
-    render() {
+    render(){
         console.log('Received a state from reducer');
         console.log(this.props.posts);
-    return (
-     <div>
-        {
-        this.props.posts ?
-        this.props.posts.map(post =>
-            <PostSummary post={post} key={post.id}/>
-            ) :
-            'Loading ...'
-        }
-     </div>
-    )
-   }
+        return (
+            <div>
+                { 
+                    this.props.posts ? 
+                    this.props.posts.map(post => 
+                        <PostSummary post={post} key={post.id}/>
+                    ) :
+                    'Loading ....'
+                }
+            </div>
+        )
+    }
 }
 
 const mapStateToProps = (state) => {
@@ -25,4 +25,5 @@ const mapStateToProps = (state) => {
         posts: state.posts
     }
 }
+
 export default connect(mapStateToProps)(AllPosts);
