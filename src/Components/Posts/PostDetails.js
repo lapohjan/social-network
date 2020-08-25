@@ -1,7 +1,6 @@
 import React from 'react'
 
-const PostDetails = () => {
-    return (
+const PostDetails = () => (
     <div className="container">
         <div className="card">
             <div className="card-title">
@@ -14,7 +13,6 @@ const PostDetails = () => {
             </div>
         </div>
     </div>
-);
-}
+)
 
 export default PostDetails;

@@ -9,24 +9,17 @@ import Register from './Components/Auth/Register'
 import PostDetails from './Components/Posts/PostDetails'
 import CreateNewPost from './Components/Posts/CreateNewPost'
 import Firebase from 'firebase'
-
 import { FIREBASE_CONFIG as firebaseConfig } from './config/firebaseConfig';
-  // Initialize Firebase
-  Firebase.initializeApp(firebaseConfig);
-  Firebase.analytics();
 
-const database = Firebase.firestore();
-database.collection('posts').get()
-  .then (resp => {
-    console.log(resp.docs[0].data());
-  })
+// Initialize Firebase
+Firebase.initializeApp(firebaseConfig);
 
 function App() {
   return (
     <Router>
       <div className="App">
         <div className="container">
-          <NavigationBar/>
+          <NavigationBar></NavigationBar>
           <Switch>
             <Route exact path="/" component={Feeds}></Route>
             <Route exact path="/create" component={CreateNewPost}></Route>

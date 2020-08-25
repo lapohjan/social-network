@@ -1,17 +1,17 @@
 import React from 'react'
 import PostSummary from './PostSummary'
 import { connect } from 'react-redux'
+import { removePosts } from '../../store/actions/postActions'
 
 class AllPosts extends React.Component {
     render(){
-        console.log('Received a state from reducer');
-        console.log(this.props.posts);
         return (
             <div>
+                <button className="btn" onClick={this.props.removePost}>Remove All Post</button>
                 { 
-                    this.props.posts ? 
+                    this.props.posts.length > 0 ? 
                     this.props.posts.map(post => 
-                        <PostSummary post={post} key={post.id}/>
+                        <PostSummary post={post} key={Math.random()*99}/>
                     ) :
                     'Loading ....'
                 }
@@ -22,8 +22,16 @@ class AllPosts extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        posts: state.posts
+        posts: state.posts // []
     }
 }
 
-export default connect(mapStateToProps)(AllPosts);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        removePost: () => {
+            dispatch(removePosts());
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllPosts);

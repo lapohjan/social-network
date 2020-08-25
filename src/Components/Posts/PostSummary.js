@@ -2,6 +2,7 @@ import React from 'react'
 
 class PostSummary extends React.Component {
     render(){
+        console.log(this.props)
         return (
             <div className="card post">
                 <div className="card-title">{this.props.post.title}</div>

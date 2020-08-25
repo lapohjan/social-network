@@ -21,7 +21,7 @@ class CreateNewPost extends React.Component{
         this.props.createPost({
             title: this.state.postTitle,
             content: this.state.postContent
-        })
+        });
     }
 
     render(){
@@ -43,17 +43,14 @@ class CreateNewPost extends React.Component{
         );
     }
 } 
+// when to dispatch the action?
+// what is the name of the props to be called so that the action is dispatched
+// is there a payload to be dispatched together with the action?
 
-const mapStateToProps = (state) => {
+const mapDispatchToProps = dispatch => {
     return {
-        
+        createPost: post => dispatch(createPost(post))  
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        createPost: post => dispatch(createPost(post))   
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNewPost);
+export default connect(null, mapDispatchToProps)(CreateNewPost);
