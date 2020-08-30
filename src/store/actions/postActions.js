@@ -1,33 +1,20 @@
-export const removePosts = () => ({ type: 'REMOVE_ALL_POSTS' })
-
-// export const createPost = post => ({ type: 'CREATE_NEW_POST', post })
-
-export const createPost = function(post){
-    return (dispatch, getState, storeEnhancers) => {
-        storeEnhancers.getFirestore().collection('posts').add(post)
-            .then(() => {
-                dispatch({ type: 'CREATE_NEW_POST' })
-            })
-            .catch(err => {
-                dispatch({ type: 'CREATE_NEW_POST_FAILED', err: err })
-            });
-    };
-}
-
-export const getPosts = () => {
-    return (dispatch, getState, storeEnhancers) => {
-        storeEnhancers.getFirestore().collection('posts').get()
-            .then(resp => {
-                dispatch({ 
-                    type: 'FETCHED_POSTS_SUCCESS',
-                    resp: resp.docs
-                })
-            })
-            .catch(err => {
-                dispatch({ 
-                    type: 'FETCHED_POSTS_FAIL', 
-                    err: err 
-                })
-            });
-    };
-}
+export const createNewPost = (project) => {
+    return (dispatch, getState, { getFirebase, getFirestore}) => {
+        // make async call to database
+        const firestore = getFirestore();
+        const profile = getState().firebase.profile;
+        const authorId = getState().firebase.auth.uid;
+        firestore.collection('projects').add({
+            ...project,
+            authorFirstName: profile.firstName,
+            authorLastName: profile.lastName,
+            authorId: authorId,
+            createdAt: new Date()
+        }).then(() => {
+            dispatch({ type: 'CREATE_PROJECT', project });  
+        }).catch((err) => {
+            dispatch({ type: 'CREATE_PROJECT_ERROR', err });
+        })
+        
+    }
+};

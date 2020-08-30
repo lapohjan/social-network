@@ -1,69 +1,60 @@
-import React from 'react';
-import { logIn } from '../../store/actions/authActions'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { logIn } from '../../store/actions/authActions'
+import { Redirect } from 'react-router-dom'
 
-class LogIn extends React.Component {
-    constructor(props) {
-        super(props);  
-    
-        this.state = {
-            email: null,
-            password: null
-        };
-
-        this.handleSubmission = this.handleSubmission.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange = (e) => {
-        console.log(this);
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
-
-    handleSubmission = (e) => {
-        e.preventDefault();
-        this.props.logIn(this.state);
-    }
-
-    render(){
-        return (
-            <div className="container">
-                {
-                    this.props.loginStatus ? 
-                    <div>You are now logged in</div> :
-                    <form onSubmit={this.handleSubmission}>
-                        <div className="input-field">
-                            <input id="email" type="text" className="validate" onChange={this.handleChange}/>
-                            <label htmlFor="email">Email:</label>
-                        </div>
-                        <div className="input-field">
-                            <input id="password" type="password" className="validate" onChange={this.handleChange}/>
-                            <label htmlFor="password">Password</label>
-                        </div>
-                        <button className="btn waves-effect waves-light" type="submit" name="action">Log In</button>
-                    </form>
-                }
-                
+class LogIn extends Component {
+  state = {
+    email: '',
+    password: ''
+  }
+  handleChange = (e) => {
+    this.setState({
+      [e.target.id]: e.target.value
+    })
+  }
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.logIn(this.state)
+  }
+  render() {
+    const { authError, auth } = this.props;
+    if (auth.uid) return <Redirect to='/' /> 
+    return (
+      <div className="container">
+        <form className="white" onSubmit={this.handleSubmit}>
+          <h5 className="purple-text text-darken-3">Log In</h5>
+          <div className="input-field">
+            <label htmlFor="email">Email</label>
+            <input type="email" id='email' onChange={this.handleChange} />
+          </div>
+          <div className="input-field">
+            <label htmlFor="password">Password</label>
+            <input type="password" id='password' onChange={this.handleChange} />
+          </div>
+          <div className="input-field">
+            <button className="btn blue lighten-1 z-depth-0">Login</button>
+            <div className="center red-text">
+              { authError ? <p>{authError}</p> : null }
             </div>
-        )
-    }
-} 
-
-const mapStateToProps = state => {
-    return {
-        loginStatus: !state.firebase.auth.isEmpty
-    }
+          </div>
+        </form>
+      </div>
+    )
+  }
 }
 
-
-const mapDispatchToProps = dispatch => {
-    return {
-        logIn: credentials => {
-            dispatch(logIn(credentials));
-        }
-    }
+const mapStateToProps = (state) => {
+  return{
+    authError: state.auth.authError,
+    auth: state.firebase.auth
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LogIn);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logIn: (creds) => dispatch(logIn(creds))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn)
